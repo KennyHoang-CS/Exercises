@@ -38,6 +38,7 @@ class Game {
 
     // store a reference to the handleClick bound function 
     // so that we can remove the event listener correctly later
+    console.log('this.handleGameClick is: ' + this.handleGameClick)
     this.handleGameClick = this.handleClick.bind(this);
     
     top.addEventListener("click", this.handleGameClick);
