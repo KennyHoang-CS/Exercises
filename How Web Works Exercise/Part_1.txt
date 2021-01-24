@@ -1,0 +1,47 @@
+What is HTTP?
+-> Hypertext Transfer Protocol, one of the protocols that are used to dictate
+when a client is able to get data to/from a server. 
+
+What is a URL?
+-> Uniform Resource Locator, it is the full address for some internet resource.
+
+What is DNS?
+-> Domain Network Service, converts human-readable URLs and converts them into IP addresses.
+
+What is a query string?
+-> The parameters that are used to specified data, like a search, sort, and etc.
+They start with .../?key1=value1&key2=value2...
+
+What are two HTTP verbs and how are they different?
+-> GET and POST: gets data from the server like an image, while the other sends data
+to the server that will be modified. 
+
+What is an HTTP request?
+-> A HTTP request is a request that a client sends to the server that follows a 
+HTTP protocol. Requesting an image, an article, or a HTML, and etc. 
+
+What is an HTTP response?
+-> A HTTP response is a response from a server that follows a HTTP protocol asking
+the server to send back an image, html, js, css, and etc. 
+
+What is an HTTP header? Give a couple examples of request and 
+response headers you have seen.
+-> Headers give more information about a response/request.
+Request examples: FROM, host, referer, referrer-policy, user-agent.
+Response examples: Allow, server, content-type 
+
+What are the processes that happen when you type 
+“http://somesite.com/some/page.html” into a browser?
+
+-> 1) Determines the protocol, which is http. 
+2) Converts the domain name somesite.com into an IP address using DNS. 
+3) Determines the port, which is default: 80.
+4) Your browser will make a request looking for the resource 'some/page.html' 
+along with any headers information about the site language, content-level, etc. 
+5) The server will send back a http response with a status code 200 upon success
+that contains the HTML.
+6) The browser will make a DOM from that HTML and convert it into a page while
+using other resources: images, javascript, and css to make that page. 
+7) The browser will make individual HTTP requests for those resources 
+images, javascript, and css, and receives a server response for each request.  
+

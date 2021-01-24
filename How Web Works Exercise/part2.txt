@@ -1,0 +1,15 @@
+1) at does a pirate pay for his corn? A buccaneer!
+What did the pirate say on his 80th birthday? Aye Matey!
+Why couldn't the kid see the pirate movie? Because it was rated arrr!
+Why do pirates not know the alphabet? They always get stuck at "C".
+Why are pirates called pirates? Because they arrr!
+
+
+2) Name:    icanhazdadjoke.com
+Addresses:  2606:4700:3034::6815:5be8
+          2606:4700:3032::ac43:b545
+          172.67.181.69
+          104.21.91.232
+
+3) Go to terminal, I type in python -m http.server
+It works.  
