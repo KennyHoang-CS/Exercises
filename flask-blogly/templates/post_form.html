@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}User Details{% endblock %}
+{% block content %}
+    
+    <p>Add Post for {{user.first_name}} {{user.last_name}}</p>
+    <span>
+        <form action="/users/{{user.id}}/delete" method="POST">
+            Title
+            <input type="text" name="title"><br><br>
+            <label for="content">Content</label>
+            <textarea name="content" id="" cols="50" rows="4"></textarea><br><br><br>
+            <button formaction="/users/{{user.id}}/edit" formmethod="GET">Cancel</button></a>
+            <button formaction="/users/{{user.id}}/posts/new" formmethod="POST">Add</button>
+            <button formaction="/users" formmethod="GET">Go Back</button>
+        </form>
+    </span>
+{% endblock %}

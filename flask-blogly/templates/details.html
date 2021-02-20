@@ -7,11 +7,17 @@
     {% endif %}
 
     <p>{{user.first_name}} {{user.last_name}}</p>
+    <ul>
+    {% for post in posts %}
+        <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
+    {% endfor %}
+    </ul>
     <span>
         <form action="/users/{{user.id}}/delete" method="POST">
-            <button type="submit" formaction="/users/{{user.id}}/edit" formmethod="GET">Edit</button></a>
+            <button type="submit" formaction="/users/{{user.id}}/edit" formmethod="GET">Edit</button>
             <button>Delete</button>
             <button type="submit" formaction="/users" formmethod="GET">Go Back</button>
+            <button type="submit" formaction="/users/{{user.id}}/posts/new" formmethod="GET">Add Post</button>
         </form>
     </span>
 {% endblock %}

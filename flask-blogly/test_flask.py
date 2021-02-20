@@ -1,6 +1,6 @@
 from unittest import TestCase
 from app import app
-from models import db, User
+from models import db, User, Post
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
 app.config['SQLALCHEMY_ECHO'] = False 
@@ -11,7 +11,7 @@ db.drop_all()
 db.create_all()
 
 class UserViewsTestCase(TestCase):
-    """ Tests for views for Pets. """
+    """ Tests for views for Users. """
 
     def setUp(self):
         """ Add a sample user. """
@@ -28,7 +28,6 @@ class UserViewsTestCase(TestCase):
 
     def tearDown(self):
         """ Clean up any foul transaction. """
-
         db.session.rollback()
 
     def test_list_users(self):
@@ -78,3 +77,67 @@ class UserViewsTestCase(TestCase):
             html = resp.get_data(as_text=True)
             self.assertEqual(resp.status_code, 200)
             self.assertNotIn('TestFirstName', html)
+
+
+class PostViewsTestCase(TestCase):
+    """ Tests for views for Posts. """
+
+    def setUp(self):
+        """ Add a sample post. """
+        
+        # Get user sample. 
+        User.query.delete()
+        user = User(first_name="TestFirstName", last_name="TestLastName", image_url="TestImageUrl")
+        db.session.add(user)
+        db.session.commit()
+
+        # Add sample post to sample user. 
+        Post.query.delete()        
+        post = Post(title="TestTitle", content="TestContent", user_id=1)
+        db.session.add(post)
+        db.session.commit()
+
+    def tearDown(self):
+        """ Clear any foul transactions. """
+        db.session.rollback()
+
+    def test_list_posts(self):
+        """ Does the sample post list contain the initial post under sample user? """
+        with app.test_client() as client:
+            resp = client.get('/users/1')
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('TestTitle', html)
+
+    def test_post_details(self):
+        """ Are we able to view sample post details? """
+        with app.test_client() as client:
+            resp = client.get('/posts/1')
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('TestContent', html)
+
+    def test_view_post_form(self):
+        """ Are we able to see the post form? """
+        with app.test_client() as client:
+            resp = client.get('/users/1/posts/new')
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('Add Post for', html)
+
+    def test_delete_post(self):
+        """ Are we able to delete the sample post? """
+        with app.test_client() as client:
+            d = {"title": "TestTitle", 
+                "content": "TestContent", 
+                "user_id": 1}
+            resp = client.post(f'/posts/1/delete', data=d, follow_redirects=True)
+            self.assertEqual(resp.status_code, 200)
+
+            resp = client.get('/users/1')
+            html = resp.get_data(as_text=True)
+            self.assertEqual(resp.status_code, 200)
+            self.assertNotIn('TestTitle', html)
