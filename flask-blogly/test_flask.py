@@ -1,6 +1,6 @@
 from unittest import TestCase
 from app import app
-from models import db, User, Post
+from models import db, User, Post, Tag, PostTag
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
 app.config['SQLALCHEMY_ECHO'] = False 
@@ -80,7 +80,7 @@ class UserViewsTestCase(TestCase):
 
 
 class PostViewsTestCase(TestCase):
-    """ Tests for views for Posts. """
+    """ Tests views for Posts. """
 
     def setUp(self):
         """ Add a sample post. """
@@ -141,3 +141,74 @@ class PostViewsTestCase(TestCase):
             html = resp.get_data(as_text=True)
             self.assertEqual(resp.status_code, 200)
             self.assertNotIn('TestTitle', html)
+
+
+class TagViewsTestCase(TestCase):
+    """ Test views for Tags. """ 
+    def setUp(self):
+        """ Add a sample user that has a post with tags. """
+        
+        # Get user sample. 
+        User.query.delete()
+        user = User(first_name="TestFirstName", last_name="TestLastName", image_url="TestImageUrl")
+        db.session.add(user)
+        db.session.commit()
+
+        # Add sample post to sample user. 
+        Post.query.delete()        
+        post = Post(title="TestTitle", content="TestContent", user_id=1)
+        db.session.add(post)
+        db.session.commit()
+
+        # Add some sample tags.
+        comedy = Tag(name='comedy')
+        adventure = Tag(name='adventure')
+        
+        # Add post-tag relationships to database. 
+        comedy.posts.append(post)
+        adventure.posts.append(post)
+        db.session.add_all([comedy, adventure])
+        db.session.commit()
+
+    def tearDown(self):
+        """ Clear any foul transactions. """
+        db.session.rollback()
+
+    def test_list_tags(self):
+        """ Does the sample post list contain the comedy and adventure tag? """
+        with app.test_client() as client:
+            resp = client.get('/posts/1')
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('adventure', html)
+
+    def test_edit_post_tags(self):
+        """ Are we able to view tags in the edit post form? """
+        with app.test_client() as client:
+            resp = client.get('/posts/1/edit')
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('adventure', html)
+
+    def test_add_tag(self):
+        """ Are we able to add a tag? """
+        with app.test_client() as client:
+            d = {"name": "funny"}
+            resp = client.post('/tags/new', data=d, follow_redirects=True)
+            self.assertEqual(resp.status_code, 200)
+
+            resp = client.get('/tags')
+            self.assertEqual(resp.status_code, 200)
+            html = resp.get_data(as_text=True)
+            self.assertIn('funny', html)
+
+    def test_add_post_tags(self):
+        """ Are we able to view tags under new user posts? """
+        with app.test_client() as client:
+            resp = client.get('/users/1/posts/new')
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn('adventure', html)
