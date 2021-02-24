@@ -15,6 +15,8 @@ class UserViewsTestCase(TestCase):
 
     def setUp(self):
         """ Add a sample user. """
+        db.drop_all()
+        db.create_all()
 
         User.query.delete()
 
@@ -84,7 +86,9 @@ class PostViewsTestCase(TestCase):
 
     def setUp(self):
         """ Add a sample post. """
-        
+        db.drop_all()
+        db.create_all()
+
         # Get user sample. 
         User.query.delete()
         user = User(first_name="TestFirstName", last_name="TestLastName", image_url="TestImageUrl")
@@ -147,7 +151,9 @@ class TagViewsTestCase(TestCase):
     """ Test views for Tags. """ 
     def setUp(self):
         """ Add a sample user that has a post with tags. """
-        
+        db.drop_all()
+        db.create_all()
+
         # Get user sample. 
         User.query.delete()
         user = User(first_name="TestFirstName", last_name="TestLastName", image_url="TestImageUrl")
