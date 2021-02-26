@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Edit Pet{% endblock %}
+{% block content %}
+    <h1>Pet Name: {{pet.name}}</h1>
+    <p>Species: {{pet.species}}</p>
+    {% if pet.image_url %}
+    <img src="{{pet.photo_url}}">
+    {% else %}
+    <p>No Image.</p>
+    {% endif %}
+    <p>Age: {{pet.age}}</p>
+    <form method="POST">
+        {{ form.csrf_token }}
+        {% for field in form 
+            if field.widget.input_type != 'hidden' %}
+        <p>
+            {{field.label}}
+            {{field}}
+        </p>
+        {% endfor %}
+    <button>Save Changes</button>
+    </form>
+{% endblock %}
