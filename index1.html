@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .container-1, .container-2, .container-3 {
+        display: flex;
+        padding: 20px;
+    }
+    .container-1 div, .container-2 div, .container-3 div {
+        border: 1px #ccc solid;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+        margin: 1rem;
+    }
+
+    .box-1, .box-2, .box-3 {
+        flex: 1;
+        font-size: large;
+        font-weight: 900;
+    }
+
+    #click-me {
+        padding: 15px;
+        margin-left: 2rem;
+        width: 200px;
+    }
+</style>
+<body>
+    <main id="parent-container">
+    <div class="container-1">
+        <div class="box-1">
+            0
+        </div>
+        <div class="box-2">
+            0
+        </div>
+        <div class="box-3">
+            0
+        </div>
+    </div>
+    <div class="container-2">
+        <div class="box-1">
+            0
+        </div>
+        <div class="box-2">
+            0
+        </div>
+        <div class="box-3">
+            0
+        </div>
+    </div>
+    <div class="container-3">
+        <div class="box-1">
+            0
+        </div>
+        <div class="box-2">
+            0
+        </div>
+        <div class="box-3">
+            0
+        </div>
+    </div>
+    </main>
+    <button id="click-me">Click me!</button>
+    <script>
+        document.querySelector(".container-1").addEventListener("click", handleClick);
+        document.querySelector(".container-2").addEventListener("click", handleClick);
+        document.querySelector(".container-3").addEventListener("click", handleClick);
+        document.querySelector("#click-me").addEventListener("click", handleButton);
+        const container1box1 = document.querySelector("#parent-container .container-1 .box-1");
+        const container1box2 = document.querySelector("#parent-container .container-1 .box-2");
+        const container1box3 = document.querySelector("#parent-container .container-1 .box-3");
+        const container2box1 = document.querySelector("#parent-container .container-2 .box-1");
+        const container2box2 = document.querySelector("#parent-container .container-2 .box-2");
+        const container2box3 = document.querySelector("#parent-container .container-2 .box-3");
+        const container3box1 = document.querySelector("#parent-container .container-3 .box-1");
+        const container3box2 = document.querySelector("#parent-container .container-3 .box-2");
+        const container3box3 = document.querySelector("#parent-container .container-3 .box-3");
+        
+        function handleClick(e) {
+            let parent = e.target.parentNode;
+            let childValue = e.target.innerText; 
+            e.target.innerText = +childValue + 1;
+        }
+
+        function handleButton(e) {
+            let containers = [container1box1, container1box2, container1box3,
+                                container2box1, container2box2, container2box3,
+                                    container3box1, container3box2, container3box3];
+            setTimeout(() => {
+                for (let i = 0; i < containers.length; i++) {
+                    let boxValue = containers[i].innerText;
+                    containers[i].innerText = +boxValue + 1; 
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
